@@ -21,17 +21,7 @@ jobs:
         sudo curl -L "https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
 
-    # Step 3: Log in to Docker Hub
-    - name: Log in to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-    # Step 4: Build and push Docker images
-    - name: Build and push Docker images
-      run: |
-        docker-compose build
-        docker-compose push
-
-    # Step 5: Deploy to EC2
+    # Step 3: Log in to EC2 (using SSH) and deploy
     - name: Deploy to EC2
       run: |
         mkdir -p ~/.ssh
@@ -69,18 +59,6 @@ jobs:
             cd $APP_DIR
           fi
 
-          # Ensure nginx.conf is present in the app directory
-          NGINX_CONF="$APP_DIR/nginx/nginx.conf"
-          if [ ! -f "$NGINX_CONF" ]; then
-            echo "nginx.conf not found, creating a default one..."
-            # You can optionally create a default nginx.conf or pull it from another location
-            echo "server { listen 80; location / { root /usr/share/nginx/html; } }" > "$NGINX_CONF"
-          fi
-
-          # Log in to Docker Hub
-          echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-          # Pull the latest images and start the services
-          sudo docker-compose pull
+          # Run docker-compose up directly on the EC2 instance
           sudo docker-compose up -d
         EOF
