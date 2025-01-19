@@ -12,7 +12,7 @@ import java.util.Map;
 public class HelloController {
 
 
-    @GetMapping("api")
+    @GetMapping()
     public Map<String, String> home(){
         Map<String, String> response = new HashMap<String, String>();
         response.put("message", "Hello World");
