@@ -1,0 +1,64 @@
+name: CI/CD Pipeline for Docker Compose to EC2
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: Log in to Docker Hub
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    # Step 3: Build and push Docker images
+    - name: Build and push Docker images
+      run: |
+        services=$(docker-compose config --services)
+        for service in $services; do
+          docker-compose build $service
+          docker tag $service:latest ${{ secrets.DOCKER_USERNAME }}/$service:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/$service:latest
+        done
+
+    # Step 4: Deploy to EC2
+    - name: Deploy to EC2
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+
+        ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          # Install Docker
+          sudo apt-get update -y
+          sudo apt-get install -y docker.io
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          sudo usermod -aG docker $USER
+          newgrp docker
+
+          # Create a directory for the application
+          mkdir -p ~/app
+
+          # Copy docker-compose.yml to the instance
+          cat > ~/app/docker-compose.yml << 'COMPOSE_FILE'
+          $(cat docker-compose.yml)
+          COMPOSE_FILE
+
+          # Log in to Docker Hub
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+          # Pull and start the services
+          cd ~/app
+          docker-compose pull
+          docker-compose up -d
+        EOF
