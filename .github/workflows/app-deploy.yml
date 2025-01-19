@@ -69,6 +69,14 @@ jobs:
             cd $APP_DIR
           fi
 
+          # Ensure nginx.conf is present in the app directory
+          NGINX_CONF="$APP_DIR/nginx/nginx.conf"
+          if [ ! -f "$NGINX_CONF" ]; then
+            echo "nginx.conf not found, creating a default one..."
+            # You can optionally create a default nginx.conf or pull it from another location
+            echo "server { listen 80; location / { root /usr/share/nginx/html; } }" > "$NGINX_CONF"
+          fi
+
           # Log in to Docker Hub
           echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
