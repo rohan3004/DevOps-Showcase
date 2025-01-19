@@ -49,7 +49,7 @@ jobs:
           fi
 
           # Clone the repository
-          REPO_URL="https://github.com/${{ secrets.GITHUB_REPOSITORY }}"
+          REPO_URL="https://github.com/rohan3004/DevOps-Showcase.git"
           APP_DIR=~/app
           if [ -d "$APP_DIR" ]; then
             cd $APP_DIR
