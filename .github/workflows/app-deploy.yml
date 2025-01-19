@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Allow manual triggering
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -20,7 +20,6 @@ jobs:
       run: |
         sudo curl -L "https://github.com/docker/compose/releases/download/v2.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
-        docker-compose version  # Confirm installation
 
     # Step 3: Log in to Docker Hub
     - name: Log in to Docker Hub
@@ -29,12 +28,8 @@ jobs:
     # Step 4: Build and push Docker images
     - name: Build and push Docker images
       run: |
-        services=$(docker-compose config --services)
-        for service in $services; do
-          docker-compose build $service
-          docker tag $service:latest ${{ secrets.DOCKER_USERNAME }}/$service:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/$service:latest
-        done
+        docker-compose build
+        docker-compose push
 
     # Step 5: Deploy to EC2
     - name: Deploy to EC2
