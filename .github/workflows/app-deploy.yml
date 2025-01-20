@@ -49,7 +49,7 @@ jobs:
 
         # Copy docker-compose.yaml to the EC2 instance
         scp -i ~/.ssh/id_rsa ./docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/docker-compose.yaml
-        scp -i ~/ssh/id_rsa ./nginx/nginx.conf ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/nginx/nginx.conf
+        scp -i ~/.ssh/id_rsa ./nginx/nginx.conf ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/nginx/nginx.conf
 
         # SSH into EC2 and deploy the application
         ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
