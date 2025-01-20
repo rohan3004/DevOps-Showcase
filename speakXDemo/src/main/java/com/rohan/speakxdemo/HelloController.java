@@ -19,7 +19,7 @@ public class HelloController {
         response.put("status", "200");
         response.put("timestamp", String.valueOf(System.currentTimeMillis()));
         response.put("version", "1.0.0");
-        response.put("user", "rohan chakravarty");
+        response.put("user", "rohan chakravarty & dona dutta");
         response.put("env", "docker");
         return response;
     }
