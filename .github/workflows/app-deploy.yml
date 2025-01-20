@@ -45,17 +45,19 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
 
-        ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir -p ~/app/nginx'
-
+        # SSH into EC2 to create directories and set permissions
+        ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir -p /home/${{ secrets.EC2_USER }}/app/nginx && sudo chown -R $USER:$USER /home/${{ secrets.EC2_USER }}/app'
+        
         # Copy docker-compose.yaml to the EC2 instance
         scp -i ~/.ssh/id_rsa ./docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/docker-compose.yaml
+
+        # Copy nginx.conf to the EC2 instance
         scp -i ~/.ssh/id_rsa ./nginx/nginx.conf ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/nginx/nginx.conf
 
         # SSH into EC2 and deploy the application
         ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
           # Ensure all necessary dependencies are installed
           sudo apt-get update -y
-          
 
           # Install Docker if not installed
           if ! command -v docker &> /dev/null; then
@@ -77,7 +79,8 @@ jobs:
           # Log in to Docker Hub
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-          cd ./app
+          # Change to app directory
+          cd /home/${{ secrets.EC2_USER }}/app
 
           # Pull the latest images and start the services
           sudo docker-compose up -d
