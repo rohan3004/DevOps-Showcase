@@ -80,5 +80,5 @@ jobs:
           cd ./app
 
           # Pull the latest images and start the services
-          docker-compose up -d
+          sudo docker-compose up -d
         EOF
