@@ -1,0 +1,7 @@
+services:
+  speakx-demo-app:
+    image: rohan3004/speakx-demo-app:latest
+    ports:
+      - "80:80"    # Map port 80 on the host to port 80 in the container
+      # - "443:443"  # Map port 443 on the host to port 443 in the container
+    restart: always  # Automatically restart the container if it stops
