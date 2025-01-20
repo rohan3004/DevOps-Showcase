@@ -1,7 +1,5 @@
 services:
   speakx-demo-app:
-    build:
-      context: ./speakXDemo
     image: rohan3004/speakx-demo-app:latest
     container_name: speakx-demo-app
     networks:
