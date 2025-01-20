@@ -30,13 +30,8 @@ jobs:
     - name: Build and push Docker images
       run: |
         docker build -f ./speakXDemo/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/speakx-demo-app:latest ./speakXDemo
-        
-
-    # Step 5: Push the Docker image with 'latest' tag
-    - name: Push Docker image
-      run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/speakx-demo-app:latest
-
+        
     # Step 5: Deploy to EC2
     - name: Deploy to EC2
       run: |
@@ -83,6 +78,7 @@ jobs:
           cd /home/${{ secrets.EC2_USER }}/app
 
           # Pull the latest images and start the services
-          sudo docker-compose down
+          sudo docker-compose pull
+          sudo docker-compose down --remove-orphans
           sudo docker-compose up -d
         EOF

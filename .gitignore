@@ -27,3 +27,5 @@
 /speakXDemo!**/src/test/**/build/
 
 /speakXDemo/.vscode/
+
+.vscode
