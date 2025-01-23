@@ -1,6 +1,8 @@
 #Required Provider
 data "aws_region" "current"{}
 
+data "aws_availability_zones" "available"{}
+
 
 provider "aws" {
   region = var.aws_region
@@ -42,7 +44,7 @@ resource "aws_subnet" "app_subnet" {
   vpc_id = aws_vpc.app_vpc.owner_id
   cidr_block = var.backend_subnet_cidr
   map_public_ip_on_launch = true
-  availability_zone = data.aws_region.current
+  availability_zone = data.aws_availability_zones.available.names[0]
   tags = {
     Name = "app-subnet"
   }
