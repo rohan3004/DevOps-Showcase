@@ -41,7 +41,7 @@ resource "aws_vpc" "app_vpc" {
 }
 
 resource "aws_subnet" "app_subnet" {
-  vpc_id = aws_vpc.app_vpc.owner_id
+  vpc_id = aws_vpc.app_vpc.id
   cidr_block = var.backend_subnet_cidr
   map_public_ip_on_launch = true
   availability_zone = data.aws_availability_zones.available.names[0]
