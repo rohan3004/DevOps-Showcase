@@ -86,10 +86,14 @@ tags = {
 }
 }
 
+variable "ssh_public_key" {
+  description = "Public SSH key for EC2"
+}
+
 # Key Pair
 resource "aws_key_pair" "app_key" {
   key_name   = var.key_name
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = var.ssh_public_key
 }
 
 # EC2 Instance
