@@ -2,6 +2,8 @@ name: CI/CD Pipeline for Docker Compose to EC2
 
 on:
   push:
+    paths:
+      - 'speakXDemo/**'
     branches:
       - main
   workflow_dispatch:
