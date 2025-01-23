@@ -29,3 +29,6 @@
 /speakXDemo/.vscode/
 
 .vscode
+
+/terraform/.terraform/*
+/terraform/.terraform.lock.hcl
