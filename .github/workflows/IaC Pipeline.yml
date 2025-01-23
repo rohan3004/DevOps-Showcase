@@ -27,27 +27,31 @@ jobs:
       # Step 3: Terraform Init
       - name: Terraform Init
         env:
-          TF_VAR_ssh_public_key: ${{ secrets.EC2_SSH_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         working-directory: ./terraform
         run: terraform init
 
       # Step 4: Terraform Validate
       - name: Terraform Validate
         env:
-          TF_VAR_ssh_public_key: ${{ secrets.EC2_SSH_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         working-directory: ./terraform
         run: terraform validate
 
       # Step 5: Terraform Plan
       - name: Terraform Plan
         env:
-          TF_VAR_ssh_public_key: ${{ secrets.EC2_SSH_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         working-directory: ./terraform
         run: terraform plan -out=tfplan
 
       # Step 6: Terraform Apply
       - name: Terraform Apply
         env:
-          TF_VAR_ssh_public_key: ${{ secrets.EC2_SSH_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         working-directory: ./terraform
         run: terraform apply -auto-approve tfplan
