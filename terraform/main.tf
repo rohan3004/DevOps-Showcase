@@ -108,7 +108,7 @@ resource "aws_instance" "app_ec2" {
   instance_type = var.instance_type
   key_name      = aws_key_pair.app_key.key_name
   subnet_id     = aws_subnet.app_subnet.id
-  security_groups = [aws_security_group.app_sg.name]
+  security_groups = [aws_security_group.app_sg.id]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -143,7 +143,7 @@ resource "aws_instance" "app_ec2" {
     Name = "app-instance"
   }
 
-  depends_on = [aws_key_pair.app_key, aws_subnet.app_subnet]
+  depends_on = [aws_key_pair.app_key, aws_subnet.app_subnet, aws_security_group.app_sg]
 }
 
 # Outputs
