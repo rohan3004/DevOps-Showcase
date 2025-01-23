@@ -48,6 +48,9 @@ resource "aws_subnet" "app_subnet" {
   tags = {
     Name = "app-subnet"
   }
+
+    depends_on = [ aws_vpc.app_vpc ]
+
 }
 
 # Security Group
