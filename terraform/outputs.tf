@@ -3,7 +3,7 @@ output "ec2_public_ip" {
 }
 
 output "ssh_access" {
-  value = "ssh -i ~/.ssh/id_rsa ubuntu@${module.ec2.instance_public_ip}"
+  value = "ssh -i ~/portfolio.pem ubuntu@${module.ec2.instance_public_ip}"
 }
 
 output "ec2_public_dns" {

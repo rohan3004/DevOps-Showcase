@@ -14,7 +14,7 @@ module "ec2" {
   source           = "./modules/ec2"
   subnet_id        = module.vpc.subnet_id
   security_group_id = module.security_group.security_group_id
-  key_name         = var.key_name
-  ssh_public_key   = var.ssh_public_key
-  instance_type    = var.instance_type
+  key_name         = "portfolio"
+  instance_type    = var.instance_type 
+  elastic_ip = var.elastic_ip
 }

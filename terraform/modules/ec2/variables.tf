@@ -3,11 +3,6 @@ variable "key_name" {
   type        = string
 }
 
-variable "ssh_public_key" {
-  description = "Public SSH key"
-  type        = string
-}
-
 variable "instance_type" {
   description = "Instance type"
   type        = string
@@ -37,4 +32,6 @@ variable "user_data" {
               EOF
 }
 
-            
+variable "elastic_ip" {
+  type = string
+}
