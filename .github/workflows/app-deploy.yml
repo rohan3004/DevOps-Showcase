@@ -43,25 +43,15 @@ jobs:
         ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
 
         # SSH into EC2 to create directories and set permissions
-        ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir -p /home/${{ secrets.EC2_USER }}/app/nginx && sudo chown -R $USER:$USER /home/${{ secrets.EC2_USER }}/app'
+        ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} 'mkdir -p /home/${{ secrets.EC2_USER }}/app && sudo chown -R $USER:$USER /home/${{ secrets.EC2_USER }}/app'
         
         # Copy docker-compose.yaml to the EC2 instance
         scp -i ~/.ssh/id_rsa ./docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/docker-compose.yaml
-
-        # Copy nginx.conf to the EC2 instance
-        scp -i ~/.ssh/id_rsa ./nginx/default ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/defualt
 
         # SSH into EC2 and deploy the application
         ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
           # Ensure all necessary dependencies are installed
           sudo apt-get update -y
-          sudo systemctl stop nginx
-
-          sudo rm /etc/nginx/sites-available/default
-
-          sudo mv /home/${{ secrets.EC2_USER }}/default /etc/nginx/sites-available/default
-          sudo systemctl stop nginx
-          sudo systemctl start nginx
 
           # Install Docker if not installed
           if ! command -v docker &> /dev/null; then
