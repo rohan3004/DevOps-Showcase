@@ -21,7 +21,7 @@ public class HelloController {
         response.put("version", "1.0.0");
         response.put("user", "rohan chakravarty & dona dutta");
         response.put("env", "docker");
-        response.put("Message", "This Project was awesome. I learnt so many new things")
+        response.put("Message", "This Project was awesome. I learnt so many new things");
         return response;
     }
 }
