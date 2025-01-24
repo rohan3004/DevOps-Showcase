@@ -32,6 +32,6 @@ variable "user_data" {
               EOF
 }
 
-variable "elastic_ip" {
+variable "EC2_HOST" {
   type = string
 }

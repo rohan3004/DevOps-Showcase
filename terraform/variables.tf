@@ -6,6 +6,6 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "elastic_ip" {
+variable "EC2_HOST" {
   type = string
 }

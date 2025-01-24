@@ -49,12 +49,16 @@ jobs:
         scp -i ~/.ssh/id_rsa ./docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/docker-compose.yaml
 
         # Copy nginx.conf to the EC2 instance
-        scp -i ~/.ssh/id_rsa ./nginx/'nginx.conf' ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app/nginx/'nginx.conf'
+        scp -i ~/.ssh/id_rsa ./nginx/'default' ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/'defualt'
 
         # SSH into EC2 and deploy the application
         ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
           # Ensure all necessary dependencies are installed
           sudo apt-get update -y
+
+          sudo mv /home/${{ secrets.EC2_USER }}/'default' /etc/nginx/sites-available/default
+          sudo systemctl stop nginx
+          sudo systemctl start nginx
 
           # Install Docker if not installed
           if ! command -v docker &> /dev/null; then

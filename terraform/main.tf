@@ -16,5 +16,5 @@ module "ec2" {
   security_group_id = module.security_group.security_group_id
   key_name         = "portfolio"
   instance_type    = var.instance_type 
-  elastic_ip = var.elastic_ip
+  EC2_HOST = var.EC2_HOST
 }

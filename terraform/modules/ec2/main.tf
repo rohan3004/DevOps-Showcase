@@ -14,7 +14,7 @@ resource "aws_instance" "app_ec2" {
 
 resource "aws_eip_association" "app_ec2" {
   instance_id = aws_instance.app_ec2.id
-  public_ip = var.elastic_ip
+  public_ip = var.EC2_HOST
 }
 
 output "instance_public_ip" {
