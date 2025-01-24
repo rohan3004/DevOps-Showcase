@@ -32,7 +32,3 @@
 
 /terraform/.terraform/*
 /terraform/.terraform.lock.hcl
-
-key.pub
-key.pub.pub
-yourfile.pem
