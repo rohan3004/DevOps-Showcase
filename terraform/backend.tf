@@ -1,5 +1,8 @@
 terraform {
-  backend "local" {
-    path = "terraform.tfstate"
+  backend "remote" {
+    organization = "DevOps_Rohan_Testing"
+    workspaces {
+      name = "my-first-workspace"
+    }
   }
 }

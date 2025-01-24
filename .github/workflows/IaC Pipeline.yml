@@ -22,6 +22,11 @@ jobs:
         with:
           terraform_version: 1.5.3
 
+      - name: Authenticate Terraform Cloud
+        env:
+          TF_CLOUD_TOKEN: ${{ secrets.TF_CLOUD_TOKEN }}
+        run: echo "Terraform Cloud authenticated"
+
       # Step 3: Terraform Init
       - name: Terraform Init
         env:
