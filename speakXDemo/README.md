@@ -1,30 +1,38 @@
-# SpeakXDemo App
+# 🚀 Spring Boot Application
 
-Welcome to **SpeakXDemo**, an innovative application that [describe the purpose or functionality of your app here].
+- **📜 Description**: A simple REST-based API built with Spring Boot in Java.
+- **🔌 Port**: The application runs on port `8080`.
+- **🛠️ Build Process**:
+  - **Two-Stage 🐳 Docker Build**:
+    1. **Build Stage**:
+       - Uses ☕ Amazon Corretto 21 Alpine and Maven to build the application and create a JAR file.
+    2. **Run Stage**:
+       - Uses ☕ OpenJDK 21 JDK Slim to run the application.
+       - Exposes port `8080` with the command: `java -jar speakXDemo.jar`.
 
-## Overview
+## 🐋 Docker
 
-SpeakXDemo is designed to help [explain the problem your app solves or the main features it offers]. It allows users to [key feature 1], [key feature 2], and [key feature 3].
+- **📄 Dockerfile**:
+  - 🏗️ Multi-stage build to optimize the size of the final image.
+  - Ensures the build and runtime environments are cleanly separated.
+- **🔧 Docker Compose**:
+  - Maps port `8080` of the container to port `80` on the host (EC2 instance).
 
-## Features
+## ⚙️ CI/CD Pipeline (GitHub Actions)
 
-- **Feature 1**: A brief description of feature 1.
-- **Feature 2**: A brief description of feature 2.
-- **Feature 3**: A brief description of feature 3.
-
-## Getting Started
-
-To get started with the **SpeakXDemo** app, follow the instructions below:
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed:
-- [Dependency 1]
-- [Dependency 2]
-- [Dependency 3]
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/speakXDemo.git
+- **📅 Triggers**:
+  - 🖱️ Manual trigger.
+  - 🔄 Automatic trigger on changes made in the `speakXDemo` directory.
+- **📋 Steps**:
+  1. 🏗️ Build the Docker image.
+  2. 📤 Push the Docker image to Docker Hub.
+  3. 🚀 Deploy the application to an EC2 instance.
+- **🔒 Secrets Used**:
+  - `DOCKER_USERNAME` and `DOCKER_PASSWORD` for 🐳 Docker Hub login.
+  - `EC2_SSH_KEY` for 🔑 SSH access to the EC2 instance.
+  - `EC2_HOST` and `EC2_USER` for EC2 connection.
+- **📦 Deployment**:
+  1. Copies the `docker-compose.yml` file from the repository to the EC2 instance.
+  2. Installs 🐳 Docker and 🐋 Docker Compose if not already present on the EC2 instance.
+  3. Logs into Docker Hub and pulls the latest image.
+  4. Runs `docker-compose up -d` to start the SpeakX API.

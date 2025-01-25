@@ -1,30 +1,30 @@
-# SpeakXDemo App
+# 🏗️ Terraform for Infrastructure as Code (IaC)
 
-Welcome to **SpeakXDemo**, an innovative application that [describe the purpose or functionality of your app here].
-
-## Overview
-
-SpeakXDemo is designed to help [explain the problem your app solves or the main features it offers]. It allows users to [key feature 1], [key feature 2], and [key feature 3].
-
-## Features
-
-- **Feature 1**: A brief description of feature 1.
-- **Feature 2**: A brief description of feature 2.
-- **Feature 3**: A brief description of feature 3.
-
-## Getting Started
-
-To get started with the **SpeakXDemo** app, follow the instructions below:
-
-### Prerequisites
-
-Before you begin, ensure you have the following installed:
-- [Dependency 1]
-- [Dependency 2]
-- [Dependency 3]
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/speakXDemo.git
+- **📦 Modules**:
+  1. **🌐 VPC Module**:
+     - Creates a 🌐 VPC, 🖧 subnets, 🌐 internet gateway, 🗺️ route table, and associates the route table.
+  2. **🛡️ Security Group Module**:
+     - Configures rules to allow:
+       - Port 22 for 🔑 SSH.
+       - Port 80 for 🌐 HTTP traffic.
+       - Port 443 for 🔒 HTTPS traffic.
+  3. **💻 EC2 Module**:
+     - Creates a `t2.micro` instance in the `us-east-1` region.
+     - Associates an existing `portfolio.pem` 🔑 key pair.
+     - Allocates and attaches a pre-created 🌐 Elastic IP to the instance.
+     - Installs and configures 🌀 NGINX as a reverse proxy.
+     - Adds an SSL certificate using 🔒 Certbot (Let’s Encrypt) for secure communication.
+- **⚙️ Pipeline**:
+  - Runs on 🧑‍💻 GitHub Actions to provision the infrastructure securely.
+  - **📋 Steps**:
+    1. `terraform init`
+    2. `terraform validate`
+    3. `terraform plan -out=tfplan`
+    4. `terraform apply -auto-approve tfplan`
+  - **🔒 Secrets Used**:
+    - `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` for 🌐 AWS authentication.
+    - `TF_VAR_EC2_HOST` for dynamic Terraform variables.
+- **🌐 DNS Configuration**:
+  - The domain is purchased from 🏷️ Namecheap.
+  - 🌩️ Cloudflare is used as the DNS provider for 🌐 CDN and 🛡️ DDoS protection.
+  - Subdomain `devops` is pointed to the 🌐 Elastic IP through Cloudflare's 🌐 name servers.
