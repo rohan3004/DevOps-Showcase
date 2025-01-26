@@ -15,7 +15,7 @@ public class HelloController {
     @GetMapping()
     public Map<String, String> home(){
         Map<String, String> response = new HashMap<String, String>();
-        response.put("message", "Hello World!");
+        response.put("message", "Hello Samya!");
         response.put("status", "200");
         response.put("timestamp", String.valueOf(System.currentTimeMillis()));
         response.put("version", "1.0.0");
